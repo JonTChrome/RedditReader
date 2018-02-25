@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SubredditTableViewManagerDelegate {
-    func itemSelected(post: Post)
+    func itemSelected(post: Post, indexPath: IndexPath)
 }
 
 class SubredditTableViewManager: NSObject, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
@@ -36,6 +36,6 @@ class SubredditTableViewManager: NSObject, UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.delegate?.itemSelected(post: posts[indexPath.row])
+        self.delegate?.itemSelected(post: posts[indexPath.row], indexPath: indexPath)
     }
 }

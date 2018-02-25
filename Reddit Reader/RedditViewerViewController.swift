@@ -14,6 +14,8 @@ class RedditViewerViewController: UIViewController, UISearchBarDelegate, Subredd
     
     var searcher: SubredditSearcher!
     
+    var indexPath: IndexPath?
+    
     @IBOutlet weak var titleBar: UINavigationItem!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
@@ -27,6 +29,12 @@ class RedditViewerViewController: UIViewController, UISearchBarDelegate, Subredd
         searcher = SubredditSearcher(delegate: self)
         searchBar.delegate = self
         searcher.sendRequest(subreddit: nil)
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let index = indexPath {
+            tableView.deselectRow(at: index, animated: false)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,10 +58,11 @@ class RedditViewerViewController: UIViewController, UISearchBarDelegate, Subredd
         }
     }
     
-    func itemSelected(post: Post) {
+    func itemSelected(post: Post, indexPath: IndexPath) {
         let storyBoard = UIStoryboard.init(name: "Main", bundle: nil)
         if let vc = storyBoard.instantiateViewController(withIdentifier: "webView") as? WebViewController {
             vc.post = post
+            self.indexPath = indexPath
             navigationController?.pushViewController(vc, animated: true)
         }
     }
