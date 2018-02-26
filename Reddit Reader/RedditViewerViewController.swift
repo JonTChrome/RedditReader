@@ -48,6 +48,7 @@ class RedditViewerViewController: UIViewController, UISearchBarDelegate, Subredd
             searcher.sendRequest(subreddit: text)
         } else {
             titleBar.title = DefaultTitle
+            searcher.sendRequest(subreddit: nil)
         }
     }
     

@@ -52,11 +52,13 @@ class SubredditSearcher: NSObject {
         url += SubredditSearcher.JsonExtension
         let networkTask = session.dataTask(with: URL(string: url)!, completionHandler : {data, response, error -> Void in
             do {
-                if let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any], let meta = (json["data"] as? [String: Any]) , let post = meta["children"] as? [NSDictionary] {
-                    let parsedPosts = self.jsonToPosts(json: post)
-                    self.delegate?.subredditSearch(posts: parsedPosts)
+                var posts = [Post]()
+                if let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any], let meta = (json["data"] as? [String: Any]) , let post = meta["children"] as? [NSDictionary] {
+                    posts = self.jsonToPosts(json: post)
                 }
+                self.delegate?.subredditSearch(posts: posts)
             } catch {
+                self.delegate?.subredditSearch(posts: [Post]())
             }
         })
         networkTask.resume()
